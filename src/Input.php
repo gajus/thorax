@@ -10,7 +10,7 @@ class Input {
 		/**
 		 * HTML attributes.
 		 * Attributes are accessible to the Label template via getAttribute.
-		 * 
+		 *
 		 * @var array
 		 */
 		$attributes = [],
@@ -26,7 +26,7 @@ class Input {
 		 * Value is used to determine whether input has been casted to string.
 		 * After input is casted to string, some operations are no longer possible, e.g.
 		 * generating a new random ID.
-		 * 
+		 *
 		 * @var boolean
 		 */
 		$is_stringified = false,
@@ -34,7 +34,7 @@ class Input {
 		 * @var string
 		 */
 		$template;
-	
+
 	/**
 	 * @param string $name Input name.
 	 * @param array $attributes HTML attributes.
@@ -80,7 +80,7 @@ class Input {
 
 		if (!isset($this->properties['name'])) {
 			$name_path = $this->getNamePath();
-			
+
 			$this->properties['name'] = ucwords(implode(' ', explode('_', $name_path[count($name_path) - 1])));
 		}
 
@@ -96,7 +96,7 @@ class Input {
 	public function getUid () {
 		return mt_rand(0, 9999);
 	}
-	
+
 	/**
 	 * @param string $name Name of the property.
 	 * @param mixed $value
@@ -113,14 +113,14 @@ class Input {
 	public function getProperty ($name) {
 		return isset($this->properties[$name]) ? $this->properties[$name] : null;
 	}
-	
+
 	/**
 	 * @return mixed If no value is matched, will return null or (if input name implies that expected value is an array) an empty array.
 	 */
 	public function getValue () {
 		return $this->properties['value'];
 	}
-	
+
 	/**
 	 * Parse input[name] into an array reprensentation.
 	 *
@@ -130,9 +130,9 @@ class Input {
 		if (strpos($this->attributes['name'], '[') === false) {
 			return [$this->attributes['name']];
 		}
-	
+
 		$path = explode('[', $this->attributes['name'], 2); // ['name']['[foo][bar]']
-		
+
 		return array_merge([$path[0]], explode('][', mb_substr($path[1], 0, -1)));
 	}
 
@@ -160,7 +160,7 @@ class Input {
 
 		$this->attributes[$name] = $value;
 	}
-	
+
 	/**
 	 * If [id] is undefined at the time of request, Dora will use instance UID.
 	 *
@@ -171,13 +171,13 @@ class Input {
 			if ($this->is_stringified) {
 				throw new Exception\LogicException('Too late to generate random [id].');
 			}
-			
+
 			$this->attributes['id'] = isset($this->properties['uid']) ? 'dora-input-' . $this->properties['uid'] : 'dora-input-' . $this->getUid();
 		}
-		
+
 		return isset($this->attributes[$name]) ? $this->attributes[$name] : null;
 	}
-	
+
 	/**
 	 * Generate string representation of the input attributes.
 	 * Attribute string will vary depending on the input type.
@@ -189,18 +189,18 @@ class Input {
 		$attributes = $this->attributes;
 
 		$attributes_string = '';
-		
+
 		switch ($this->attributes['type']) {
 			case 'checkbox':
 			case 'radio':
 				$value = $this->getValue();
-				
+
 				if ($this->attributes['value'] == $value || is_array($value) && in_array($this->attributes['value'], $value)) {
 					$attributes['checked'] = 'checked';
 				}
-				
+
 				break;
-			
+
 			case 'textarea':
 			case 'select':
 				unset($attributes['type']);
@@ -210,20 +210,20 @@ class Input {
 		if (!in_array($this->attributes['type'], ['checkbox', 'radio'])) {
 			unset($attributes['value']);
 		}
-		
+
 		ksort($attributes); // To make the unit testing simpler.
-		
+
 		#if (strpos(strrev($attributes['name']), '][') === 0) {
 		#	$attributes['name'] = substr_replace($attributes['name'], '[' . $this->index . ']', -2);
 		#}
-		
+
 		foreach ($attributes as $k => $v) {
 			$attributes_string .= ' ' . $k . '="' . $v . '"';
 		}
-		
+
 		return trim($attributes_string);
 	}
-	
+
 	public function toString () {
 		if ($this->is_stringified) {
 			throw new Exception\LogicException('Input has already been stringified.');
@@ -238,13 +238,13 @@ class Input {
 
 			return $template->toString();
 		}
-		
+
 		$this->is_stringified = true;
-		
+
 		$value = $this->getValue();
-		
+
 		$attributes_string = $this->stringifyAttributes();
-		
+
 		switch ($this->attributes['type']) {
 			case 'select':
 				if (!isset($this->properties['options'])) {
@@ -270,7 +270,7 @@ class Input {
 
 						$has_selected_option = true;
 					}
-				
+
 					$options_string	.= '<option value="' . $v . '"' . $selected . '>' . $l . '</option>';
 				}
 
@@ -281,10 +281,10 @@ class Input {
 						$options_string	= '<option selected="selected" disabled="disabled">' . $placeholder . '</option>' . $options_string;
 					}
 				}
-			
+
 				$input = '<select ' . $attributes_string . '>' . $options_string . '</select>';
 				break;
-			
+
 			case 'checkbox':
 			case 'radio':
 			case 'password':
@@ -299,7 +299,7 @@ class Input {
 				}
 				break;
 		}
-		
+
 		return $input;
 	}
 
