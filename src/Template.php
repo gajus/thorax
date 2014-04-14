@@ -8,11 +8,11 @@ namespace Gajus\Dora;
 abstract class Template {
 	private
 		$input;
-	
+
 	final public function __construct (\Gajus\Dora\Input $input) {
 		$this->input = $input;
 	}
-	
+
 	/**
 	 * @return Gajus\Dora\Input
 	 */

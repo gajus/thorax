@@ -18,7 +18,7 @@ class Traditional extends \Gajus\Dora\Template {
 		<div class="dora-input<?=$class?>">
 			<label for="<?=$input_id?>"><?=$input->getProperty('name')?></label>
 			<?=$input?>
-			
+
 			<?php if ($description):?>
 			<div class="description">
 				<p><?=$description?></p>

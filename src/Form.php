@@ -15,14 +15,14 @@ class Form implements \Psr\Log\LoggerAwareInterface {
 		 * Quasi-persistent unique indentifier. This UID does not change unless
 		 * the underlying code has changed, i.e. UID is derived using the hash
 		 * of the caller file/line.
-		 * 
+		 *
 		 * @var string
 		 */
 		$uid,
 		/**
 		 * CSRF token is derived from session_id and therefore is unique to each
 		 * session.
-		 * 
+		 *
 		 * @var string
 		 */
 		$csrf,
@@ -44,7 +44,7 @@ class Form implements \Psr\Log\LoggerAwareInterface {
 		$input_index = [],
 		/**
 		 * Indicates whether this particular form has been submitted.
-		 * 
+		 *
 		 * @var boolean
 		 */
 		$is_submitted = false,
@@ -52,15 +52,15 @@ class Form implements \Psr\Log\LoggerAwareInterface {
 		 * @var string
 		 */
 		$template;
-		
+
 	/**
 	 * @param array $data Data used to populate Input generated using an instance of this Form.
 	 * @param null|string $template Template class name.
 	 */
 	public function __construct (array $data = null, $template = 'Gajus\Dora\Template\Traditional') {
 		if (session_status() === \PHP_SESSION_NONE) {
-	        throw new Exception\LogicException('Session must be started before using Dora.');
-	    }
+			throw new Exception\LogicException('Session must be started before using Dora.');
+		}
 
 		$this->template = $template;
 		$this->logger = new \Psr\Log\NullLogger();
@@ -68,7 +68,7 @@ class Form implements \Psr\Log\LoggerAwareInterface {
 		$caller = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
 
 		$this->uid = (string) crc32($caller['file'] . '_' . $caller['line']);
-		
+
 		unset($caller);
 
 		$this->csrf = sha1(session_id());
@@ -81,20 +81,20 @@ class Form implements \Psr\Log\LoggerAwareInterface {
 	}
 
 	/**
-     * Sets a logger instance on the object
-     *
-     * @param LoggerInterface $logger
-     * @return null
-     */
-    public function setLogger(\Psr\Log\LoggerInterface $logger) {
-    	$this->logger = $logger;
-    }
+	 * Sets a logger instance on the object
+	 *
+	 * @param LoggerInterface $logger
+	 * @return null
+	 */
+	public function setLogger(\Psr\Log\LoggerInterface $logger) {
+		$this->logger = $logger;
+	}
 
-    /**
-     * 
-     * 
-     * @return array
-     */
+	/**
+	 *
+	 *
+	 * @return array
+	 */
 	public function getData () {
 		$data = $this->data;
 
@@ -104,8 +104,8 @@ class Form implements \Psr\Log\LoggerAwareInterface {
 	}
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @return boolean
 	 */
 	public function isSubmitted ($check_csfr = true) {
@@ -131,7 +131,7 @@ class Form implements \Psr\Log\LoggerAwareInterface {
 
 	/**
 	 * Used to create input that is associated with the Form instance data.
-	 * 
+	 *
 	 * @param string $name
 	 * @param array $attributes
 	 * @param array $properties
@@ -170,20 +170,20 @@ class Form implements \Psr\Log\LoggerAwareInterface {
 
 		// Indicates whether input name attribute implies that expected value is an array, e.g. foo[].
 		$declared_as_array = false;
-		
+
 		if (strpos(strrev($name), '][') === 0) {
 			array_pop($path);
-			
+
 			$declared_as_array = true;
 		}
 
 		foreach ($path as $crumble) {
 			if (!isset($value[$crumble])) {
 				$value = null;
-				
+
 				break;
 			}
-			
+
 			$value = $value[$crumble];
 		}
 
@@ -205,7 +205,7 @@ class Form implements \Psr\Log\LoggerAwareInterface {
 
 		return $input;
 	}
-	
+
 	/**
 	 * @return string
 	 */

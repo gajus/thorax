@@ -15,11 +15,11 @@ Input generation library for value resolution, data persistence, templates, CSRF
  * @param null|string $template Template class name.
  */
 $form = new \Gajus\Dora\Form([
-    'foo' => 'Heeeere\'s...Johnny!',
-    'bar' => 'Yada, yada, yada.',
-    'baz' => 0,
-    'qux' => ['1', 2 => '3'],
-    'corge[grault]' = 'garply'
+	'foo' => 'Heeeere\'s...Johnny!',
+	'bar' => 'Yada, yada, yada.',
+	'baz' => 0,
+	'qux' => ['1', 2 => '3'],
+	'corge[grault]' = 'garply'
 ], null);
 ```
 
@@ -45,8 +45,8 @@ echo $form->input('baz', null, ['options' => ['Knock, knock...', 'Come in.']]);
 ```html
 <textarea class="test" name="bar">Yada, yada, yada.</textarea>
 <select name="baz">
-    <option value="0" selected="selected">Knock, knock...</option>
-    <option value="1">Come in.</option>
+	<option value="0" selected="selected">Knock, knock...</option>
+	<option value="1">Come in.</option>
 </select>
 ```
 
@@ -122,28 +122,28 @@ namespace Gajus\Dora\Template;
  * @license https://github.com/gajus/dora/blob/master/LICENSE BSD 3-Clause
  */
 class Traditional extends \Gajus\Dora\Template {
-    public function toString () {
-        $input = $this->getInput();
-        $input_id = $input->getAttribute('id');
-        $description = $input->getProperty('description');
+	public function toString () {
+		$input = $this->getInput();
+		$input_id = $input->getAttribute('id');
+		$description = $input->getProperty('description');
 
-        $class = $input->getProperty('class');
-        $class = $class ? ' ' . $class : '';
+		$class = $input->getProperty('class');
+		$class = $class ? ' ' . $class : '';
 
-        ob_start();?>
-        <div class="dora-input<?=$class?>">
-            <label for="<?=$input_id?>"><?=$input->getProperty('name')?></label>
-            <?=$input?>
-            
-            <?php if ($description):?>
-            <div class="description">
-                <p><?=$description?></p>
-            </div>
-            <?php endif;?>
-        </div>
-        <?php
-        return ob_get_clean();
-    }
+		ob_start();?>
+		<div class="dora-input<?=$class?>">
+			<label for="<?=$input_id?>"><?=$input->getProperty('name')?></label>
+			<?=$input?>
+
+			<?php if ($description):?>
+			<div class="description">
+				<p><?=$description?></p>
+			</div>
+			<?php endif;?>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
 }
 ```
 
@@ -167,8 +167,8 @@ Form generated using Dora need to be signed:
 $form = new \Gajus\Dora\Form();
 ?>
 <form>
-    <?=$form->sign()?>
-    <input type="submit">
+	<?=$form->sign()?>
+	<input type="submit">
 </form>
 ```
 
@@ -188,7 +188,7 @@ Use `isSubmitted` method to catch when the Form is submitted, e.g.
 // $form from the preceding example.
 
 if ($form->isSubmitted()) {
-    // This will be triggered if CSRF passed.
+	// This will be triggered if CSRF passed.
 }
 ```
 
@@ -223,9 +223,9 @@ The recommended way to use Dora is through [Composer](https://getcomposer.org/).
 
 ```json
 {
-    "require": {
-        "gajus/dora": "0.1.*"
-    }
+	"require": {
+		"gajus/dora": "0.1.*"
+	}
 }
 ```
 

@@ -20,7 +20,7 @@ class FormGenerationTest extends PHPUnit_Framework_TestCase {
 
 	public function testFormSigning () {
 		$uid = (string) crc32(__FILE__ . '_' . (__LINE__ + 3));
-        $csrf = sha1(session_id());
+		$csrf = sha1(session_id());
 
 		$form = new \Gajus\Dora\Form();
 

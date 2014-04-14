@@ -1,6 +1,6 @@
 <?php
 class InputValueResolutionTest extends PHPUnit_Framework_TestCase {
-	
+
 	private
 		$form;
 
@@ -70,7 +70,7 @@ class InputValueResolutionTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertSame(5, $input1->getValue());
 		$this->assertSame(10, $input2->getValue());
-		
+
 		$this->assertNull($input3->getValue());
 	}
 }
